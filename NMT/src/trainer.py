@@ -548,6 +548,11 @@ class TrainerMT(MultiprocessingEventLoop):
         set_flat_params(self.decoder, decoder_params)
 
     def otf_bt_gen_async(self, init_cache_size=None):
+        # It starts BT generation for 30 processes using async calls. Returns an iterator.
+        # For every process which finishes BT generation, the next batch is passed to it for BT generation.
+        # Every time next() is called on the iterator, it yields 1 unit of result which contains 2 batches of BT data (one for each direction).
+        # Once all the units in the results are yielded, the While loop executes and more results are collected, threads which have finished are given new batches to work on.
+        # In every iteration, 1 result is used. On the 1000th iteration, when params are synced, there could be 30 results in the 30 processes generated using old parameters.
         logger.info("Populating initial OTF generation cache ...")
         if init_cache_size is None:
             init_cache_size = self.num_replicas

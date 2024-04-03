@@ -477,6 +477,8 @@ class TransformerDecoderLayer(nn.Module):
             return x
 
 
+# First specifying the padding index ensures the embedding for <pad> is 0, but then its initialized with Normal distribution.
+# So we again set the embedding for <pad> to 0.
 def Embedding(num_embeddings, embedding_dim, padding_idx):
     m = nn.Embedding(num_embeddings, embedding_dim, padding_idx=padding_idx)
     nn.init.normal_(m.weight, mean=0, std=embedding_dim**-0.5)
