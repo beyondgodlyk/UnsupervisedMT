@@ -321,8 +321,6 @@ def main(params):
                 # Note that batches contains only 2 batch each time.
                 for batch in batches:
                     lang1, lang2, lang3 = batch['lang1'], batch['lang2'], batch['lang3']
-                    logger.info("lang1: %s, lang2: %s, lang3: %s" % (lang1, lang2, lang3))
-                    logger.info("batch[sent1]: %s" % batch['sent1'])
                     # 2-lang back-translation - autoencoding
                     if lang1 != lang2 == lang3:
                         trainer.otf_bt(batch, params.lambda_xe_otfa, params.otf_backprop_temperature)
