@@ -315,9 +315,14 @@ def main(params):
                 # get training batch from CPU
                 before_gen = time.time()
                 batches = next(otf_iterator)
+                logger.info("Language is "% batches[0]['lang1'])
+                logger.info("Sentences are "% batches[0]['sent1'][:3])
+                logger.info("Second Language is "% batches[1]['lang1'])
+                logger.info("Second Sentences are "% batches[1]['sent1'][:3])
                 trainer.gen_time += time.time() - before_gen
 
                 # training
+                # Note that batches contains only 2 batch each time.
                 for batch in batches:
                     lang1, lang2, lang3 = batch['lang1'], batch['lang2'], batch['lang3']
                     # 2-lang back-translation - autoencoding
